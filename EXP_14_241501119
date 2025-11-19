@@ -1,0 +1,145 @@
+Exp14
+db.restaurants.find({
+  $or: [
+    { cuisine: { $nin: ["American", "Chinese"] } },
+    { name: /^Wil/i }
+  ]
+}, { restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
+
+db.restaurants.find({
+  grades: {
+    $elemMatch: {
+      grade: "A",
+      score: 11,
+      date: ISODate("2014-08-11T00:00:00Z")
+    }
+  }
+}, { restaurant_id: 1, name: 1, grades: 1 });
+
+db.restaurants.find({
+  "grades.1.grade": "A",
+  "grades.1.score": 9,
+  "grades.1.date": ISODate("2014-08-11T00:00:00Z")
+}, { restaurant_id: 1, name: 1, grades: 1 });
+
+db.restaurants.find(
+  { "address.coord.1": { $gt: 42, $lte: 52 } },
+  { restaurant_id: 1, name: 1, address: 1, "address.coord": 1 }
+);
+
+db.restaurants.find().sort({ name: 1 });
+
+db.restaurants.find().sort({ name: -1 });
+
+db.restaurants.find().sort({ cuisine: 1, borough: -1 });
+
+db.restaurants.find({ "address.street": { $exists: true } });
+
+db.restaurants.find({ "address.coord": { $type: "double" } });
+
+db.restaurants.find(
+  { "grades.score": { $mod: [7, 0] } },
+  { restaurant_id: 1, name: 1, grades: 1 }
+);
+
+db.restaurants.find(
+  { name: /mon/i },
+  { name: 1, borough: 1, "address.coord": 1, cuisine: 1 }
+);
+
+db.restaurants.find(
+  { name: /^Mad/i },
+  { name: 1, borough: 1, "address.coord": 1, cuisine: 1 }
+);
+
+db.restaurants.find({ "grades.score": { $lt: 5 } });
+
+db.restaurants.find({ "grades.score": { $lt: 5 }, borough: "Manhattan" });
+
+db.restaurants.find({
+  "grades.score": { $lt: 5 },
+  borough: { $in: ["Manhattan", "Brooklyn"] }
+});
+
+db.restaurants.find({
+  "grades.score": { $lt: 5 },
+  borough: { $in: ["Manhattan", "Brooklyn"] },
+  cuisine: { $ne: "American" }
+});
+
+db.restaurants.find({
+  "grades.score": { $lt: 5 },
+  borough: { $in: ["Manhattan", "Brooklyn"] },
+  cuisine: { $nin: ["American", "Chinese"] }
+});
+
+db.restaurants.find({ "grades.score": { $all: [2, 6] } });
+
+db.restaurants.find({
+  "grades.score": { $all: [2, 6] },
+  borough: "Manhattan"
+});
+
+db.restaurants.find({
+  "grades.score": { $all: [2, 6] },
+  borough: { $in: ["Manhattan", "Brooklyn"] }
+});
+
+db.restaurants.find({
+  "grades.score": { $all: [2, 6] },
+  borough: { $in: ["Manhattan", "Brooklyn"] },
+  cuisine: { $ne: "American" }
+});
+
+db.restaurants.find({
+  "grades.score": { $all: [2, 6] },
+  borough: { $in: ["Manhattan", "Brooklyn"] },
+  cuisine: { $nin: ["American", "Chinese"] }
+});
+
+db.restaurants.find({
+  $or: [
+    { "grades.score": 2 },
+    { "grades.score": 6 }
+  ]
+});
+
+db.movies.find({ year: 1893 });
+
+db.movies.find({ runtime: { $gt: 120 } });
+
+db.movies.find({ genres: "Short" });
+
+db.movies.find({ directors: "William K.L. Dickson" });
+
+db.movies.find({ countries: "USA" });
+
+db.movies.find({ rated: "UNRATED" });
+
+db.movies.find({ "imdb.votes": { $gt: 1000 } });
+
+db.movies.find({ "imdb.rating": { $gt: 7 } });
+
+db.movies.find({ "tomatoes.viewer.rating": { $gt: 4 } });
+
+db.movies.find({ "awards.wins": { $gt: 0 } });
+
+db.movies.find(
+  { "awards.nominations": { $gte: 1 } },
+  { title: 1, languages: 1, released: 1, directors: 1, writers: 1, awards: 1, year: 1, genres: 1, runtime: 1, cast: 1, countries: 1 }
+);
+
+db.movies.find(
+  { cast: "Charles Kayser" },
+  { title: 1, languages: 1, released: 1, directors: 1, writers: 1, awards: 1, year: 1, genres: 1, runtime: 1, cast: 1, countries: 1 }
+);
+
+db.movies.find(
+  { released: ISODate("1893-05-09T00:00:00Z") },
+  { title: 1, languages: 1, released: 1, directors: 1, writers: 1, countries: 1 }
+);
+
+db.movies.find(
+  { title: /scene/i },
+  { title: 1, languages: 1, released: 1, directors: 1, writers: 1, countries: 1 }
+);
